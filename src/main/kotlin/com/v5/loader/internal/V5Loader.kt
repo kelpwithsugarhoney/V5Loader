@@ -19,7 +19,7 @@ internal object V5Loader {
     private const val DEVELOPER_JAR_PREFIX = "V5-Loader-DEV-"
     private const val GITHUB_API_HOST = "api.github.com"
     private const val GITHUB_HOST = "github.com"
-    private const val GITHUB_REPOSITORY = "V5-Client/V5Loader"
+    private const val GITHUB_REPOSITORY = "kelpwithsugarhoney/V5Loader"
     private val SHA_256_REGEX = Regex("[a-f0-9]{64}")
     private val RELEASE_TAG_REGEX = Regex("[A-Za-z0-9._-]+")
     private var initialized = false
@@ -40,7 +40,14 @@ internal object V5Loader {
             initialized = true
             return
         }
-        checkSelfUpdate(minecraftVersion, File(gameDirPath))
+        try {
+            checkSelfUpdate(minecraftVersion, File(gameDirPath))
+        } catch (e: Exception) {
+            System.err.println(
+                "[V5] Self-update check failed for $GITHUB_REPOSITORY; continuing with the installed loader: " +
+                    (e.message ?: e.javaClass.simpleName)
+            )
+        }
         initialized = true
     }
 
